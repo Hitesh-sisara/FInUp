@@ -30,6 +30,10 @@ migrate_working_dir/
 .pub-cache/
 .pub/
 /build/
+lib/core/api_constants.dart
+android/app/google-services.json
+ios/Runner/Assets.xcassets/GoogleService-Info.plist
+lib/core/credentials.dart
 
 # Symbolication related
 app.*.symbols
