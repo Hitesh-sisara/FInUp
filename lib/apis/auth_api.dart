@@ -12,7 +12,7 @@ AuthAPI authAPI(_) => AuthAPI();
 class AuthAPI {
   final _client = Supabase.instance.client;
 
-  getCurrentUser() {
+  User? getCurrentUser() {
     return _client.auth.currentUser;
   }
 
@@ -27,6 +27,7 @@ class AuthAPI {
     );
     final googleUser = await googleSignIn.signIn();
     final googleAuth = await googleUser!.authentication;
+
     final accessToken = googleAuth.accessToken;
     final idToken = googleAuth.idToken;
 

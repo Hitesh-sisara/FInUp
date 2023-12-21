@@ -1,5 +1,10 @@
+import 'package:finup/apis/auth_user.dart';
 import 'package:finup/auth/screens/welcome_screen.dart';
+import 'package:finup/common/widgets/error.dart';
+import 'package:finup/common/widgets/loader.dart';
+import 'package:finup/home/home_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:riverpod_annotation/riverpod_annotation.dart';
@@ -16,27 +21,26 @@ final _routes = GoRouter(
     GoRoute(
       path: '/',
       builder: (context, state) {
-        return WelcomeScreen();
-        // return Consumer(
-        //   builder: (context, ref, child) {
-        //     return ref.watch(authUserProvider).when(
-        //         data: (user) {
-        //           return (user != null)
-        //               ? const HomeScreen()
-        //               : const WelcomeScreen();
-        //         },
-        //         error: ((error, stackTrace) {
-        //           return ErrorPage(error: error.toString());
-        //         }),
-        //         loading: () => const LoadingPage());
-        //   },
-        // );
+        return Consumer(
+          builder: (context, ref, child) {
+            return ref.watch(authUserProvider).when(
+                data: (user) {
+                  return (user != null)
+                      ? const HomeScreen()
+                      : const WelcomeScreen();
+                },
+                error: ((error, stackTrace) {
+                  return ErrorPage(error: error.toString());
+                }),
+                loading: () => const LoadingPage());
+          },
+        );
       },
     ),
-    // GoRoute(
-    //   path: '/home',
-    //   builder: (context, state) => const HomeScreen(),
-    // ),
+    GoRoute(
+      path: '/home',
+      builder: (context, state) => const HomeScreen(),
+    ),
     // GoRoute(
     //   path: '/signin',
     //   builder: (context, state) => const SignInScreen(),

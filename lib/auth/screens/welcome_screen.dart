@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class WelcomeScreen extends ConsumerStatefulWidget {
   const WelcomeScreen({super.key});
@@ -30,14 +31,25 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
       if (mounted) {
         context.push("/home");
       }
+    } on AuthException catch (e) {
+      setState(() {
+        _isGoogleSubmitting = false;
+      });
+
+      print("auth");
+      print(e.toString());
+
+      context.showAlert(e.toString());
     } catch (e) {
       setState(() {
         _isGoogleSubmitting = false;
       });
 
-      print(e.toString());
-
-      context.showAlert(e.toString());
+      if (e.toString() == "Null check operator used on a null value") {
+        context.showAlert("signin Cancelled");
+      } else {
+        context.showAlert(e.toString());
+      }
     }
   }
 
