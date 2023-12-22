@@ -28,10 +28,52 @@ class MyApp extends ConsumerWidget {
       splitScreenMode: true,
       builder: (_, child) => MaterialApp.router(
         title: 'Menu Master',
+        // theme: FlexThemeData.light(
+        //     bottomAppBarElevation: 2,
+        //     scheme: FlexScheme.blue,
+        //     textTheme: GoogleFonts.poppinsTextTheme()),
+        // darkTheme: FlexThemeData.dark(
+        //     bottomAppBarElevation: 2,
+        //     scheme: FlexScheme.blue,
+        //     textTheme: GoogleFonts.poppinsTextTheme()),
+
         theme: FlexThemeData.light(
-            scheme: FlexScheme.blue, textTheme: GoogleFonts.poppinsTextTheme()),
+          textTheme: GoogleFonts.poppinsTextTheme(),
+          scheme: FlexScheme.blue,
+          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+          blendLevel: 7,
+          subThemesData: const FlexSubThemesData(
+            blendOnLevel: 10,
+            blendOnColors: false,
+            useTextTheme: true,
+            useM2StyleDividerInM3: true,
+            alignedDropdown: true,
+            useInputDecoratorThemeInDialogs: true,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: true,
+          swapLegacyOnMaterial3: true,
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
+        ),
         darkTheme: FlexThemeData.dark(
-            scheme: FlexScheme.blue, textTheme: GoogleFonts.poppinsTextTheme()),
+          textTheme: GoogleFonts.poppinsTextTheme(),
+          scheme: FlexScheme.blue,
+          surfaceMode: FlexSurfaceMode.levelSurfacesLowScaffold,
+          blendLevel: 13,
+          subThemesData: const FlexSubThemesData(
+            blendOnLevel: 20,
+            useTextTheme: true,
+            useM2StyleDividerInM3: true,
+            alignedDropdown: true,
+            useInputDecoratorThemeInDialogs: true,
+          ),
+          visualDensity: FlexColorScheme.comfortablePlatformDensity,
+          useMaterial3: true,
+          swapLegacyOnMaterial3: true,
+          // To use the Playground font, add GoogleFonts package and uncomment
+          // fontFamily: GoogleFonts.notoSans().fontFamily,
+        ),
         themeMode: ThemeMode.system,
         routerConfig: routes,
       ),

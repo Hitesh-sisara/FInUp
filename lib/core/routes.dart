@@ -2,7 +2,7 @@ import 'package:finup/apis/auth_user.dart';
 import 'package:finup/auth/screens/welcome_screen.dart';
 import 'package:finup/common/widgets/error.dart';
 import 'package:finup/common/widgets/loader.dart';
-import 'package:finup/home/home_screen.dart';
+import 'package:finup/navigation/bottom_app_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -25,9 +25,7 @@ final _routes = GoRouter(
           builder: (context, ref, child) {
             return ref.watch(authUserProvider).when(
                 data: (user) {
-                  return (user != null)
-                      ? const HomeScreen()
-                      : const WelcomeScreen();
+                  return (user != null) ? MainWrapper() : const WelcomeScreen();
                 },
                 error: ((error, stackTrace) {
                   return ErrorPage(error: error.toString());
@@ -39,7 +37,7 @@ final _routes = GoRouter(
     ),
     GoRoute(
       path: '/home',
-      builder: (context, state) => const HomeScreen(),
+      builder: (context, state) => const MainWrapper(),
     ),
     // GoRoute(
     //   path: '/signin',
