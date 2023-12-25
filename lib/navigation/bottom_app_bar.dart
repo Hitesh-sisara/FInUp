@@ -1,8 +1,12 @@
 import 'package:finup/common/widgets/utils.dart';
 import 'package:finup/core/providers/navbar_provider.dart';
+import 'package:finup/instruments/screens/bottom_sheet.dart';
+import 'package:finup/instruments/screens/new_instrument.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class MainWrapper extends ConsumerStatefulWidget {
   const MainWrapper({super.key});
@@ -35,7 +39,6 @@ class _MainWrapperState extends ConsumerState<MainWrapper> {
 
   void onPageChanged(int page) {
     ref.read(navIndexProvider.notifier).state = page;
-    print('Current Page: $page');
   }
 
   @override
@@ -68,10 +71,10 @@ class _MainWrapperState extends ConsumerState<MainWrapper> {
                   filledIcon: Icons.home,
                 ),
                 _bottomAppBarItem(
-                  defaultIcon: Icons.headphones_outlined,
+                  defaultIcon: CupertinoIcons.rectangle_stack,
                   page: 1,
-                  label: "Favorite",
-                  filledIcon: Icons.headphones,
+                  label: "Instruments",
+                  filledIcon: CupertinoIcons.rectangle_stack_fill,
                 ),
                 _bottomAppBarItem(
                   defaultIcon: Icons.no_accounts_outlined,
@@ -80,10 +83,10 @@ class _MainWrapperState extends ConsumerState<MainWrapper> {
                   filledIcon: Icons.no_accounts,
                 ),
                 _bottomAppBarItem(
-                  defaultIcon: Icons.person_outline,
+                  defaultIcon: CupertinoIcons.person_crop_circle,
                   page: 3,
                   label: "Profile",
-                  filledIcon: Icons.person,
+                  filledIcon: CupertinoIcons.person_crop_circle_fill,
                 ),
               ],
             ),
@@ -99,7 +102,10 @@ class _MainWrapperState extends ConsumerState<MainWrapper> {
   FloatingActionButton _mainWrapperFab() {
     return FloatingActionButton(
       onPressed: () {
-        context.showAlert("hello");
+        showModalBottomSheet(
+          context: context,
+          builder: (context) => const AddNewCrediCard(),
+        );
       },
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(50)),
       // backgroundColor: Colors.amber,

@@ -1,5 +1,4 @@
 import 'package:finup/apis/auth_api.dart';
-import 'package:finup/core/routes.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 

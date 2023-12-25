@@ -37,6 +37,11 @@ class MyApp extends ConsumerWidget {
         //     scheme: FlexScheme.blue,
         //     textTheme: GoogleFonts.poppinsTextTheme()),
 
+        // theme: ThemeData(
+        //   colorScheme: ColorScheme.fromSeed(seedColor: Colors.amber),
+        //   useMaterial3: true,
+        // ),
+
         theme: FlexThemeData.light(
           textTheme: GoogleFonts.poppinsTextTheme(),
           scheme: FlexScheme.blue,
