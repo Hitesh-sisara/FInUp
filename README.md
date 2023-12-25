@@ -1,16 +1,4 @@
 # finup
 
-A new Flutter project.
+![Simulator Screenshot - iPhone 15 Pro Max - 2023-12-25 at 13 01 49](https://github.com/FinUp-app/FInUp/assets/154126125/da9f37c6-ebca-4c54-9af5-747d02d6b607)
 
-## Getting Started
-
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
