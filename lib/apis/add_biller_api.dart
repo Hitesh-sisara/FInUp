@@ -5,14 +5,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 part 'add_biller_api.g.dart';
 
 @riverpod
-AddBillerAPI addBillerAPI(_) => AddBillerAPI();
+BillerAPI billerAPI(_) => BillerAPI();
 
-class AddBillerAPI {
+class BillerAPI {
   final _client = Supabase.instance.client;
 
   Future<List<CreditCard>> getCreditCards() async {
-    final res =
-        await _client.from('credit_cards').select(); // Select all columns
+    final res = await _client.from('credit_cards').select();
+
+    print(res);
 
     if (res.isNotEmpty) {
       return res.map<CreditCard>((row) => CreditCard.fromJson(row)).toList();

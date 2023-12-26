@@ -99,6 +99,7 @@ class _WelcomeScreenState extends ConsumerState<WelcomeScreen> {
                     onPressed: _isGoogleSubmitting ? null : _googleSignIn,
                     icon: SvgPicture.asset(
                       "assets/svgs/google.svg",
+                      color: Theme.of(context).colorScheme.background,
                       height: 40.h,
                       width: 40.h,
                     ),

@@ -1,5 +1,6 @@
 import 'package:finup/common/widgets/utils.dart';
 import 'package:finup/core/providers/navbar_provider.dart';
+import 'package:finup/UI/tabs_screen.dart';
 import 'package:finup/instruments/screens/bottom_sheet.dart';
 import 'package:finup/instruments/screens/new_instrument.dart';
 import 'package:flutter/cupertino.dart';
@@ -32,7 +33,7 @@ class _MainWrapperState extends ConsumerState<MainWrapper> {
 
   final List<Widget> topLevelPages = const [
     Center(child: Text("1")),
-    Center(child: Text("2")),
+    TabScreen(),
     Center(child: Text("3")),
     Center(child: Text("4")),
   ];

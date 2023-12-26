@@ -22,8 +22,15 @@ class LongButton extends StatelessWidget {
     return ElevatedButton(
       onPressed: isLoading ? null : onPressed,
       style: ElevatedButton.styleFrom(
+        backgroundColor: colour ??
+            Theme.of(context)
+                .primaryColor, // Use colour or default to theme's primary color
+
+        disabledForegroundColor:
+            Colors.grey, // Set disabled text color to white
+
         // backgroundColor: colour ?? Colors.yellow[900],
-        // foregroundColor: Colors.white,
+        foregroundColor: Theme.of(context).colorScheme.background,
         // disabledForegroundColor: Colors.white,
         minimumSize: Size(1.sw / 1.2, 60.h),
         shape: RoundedRectangleBorder(

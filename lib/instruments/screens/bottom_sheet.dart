@@ -30,6 +30,8 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
 
   bool _isCardDeatiledFilled = false;
 
+  bool isLoading = false;
+
   final TextEditingController last4DigitsController = TextEditingController();
   final TextEditingController creditLimitController = TextEditingController();
 
@@ -50,7 +52,9 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
   Future<void> _submitCreditCardData() async {
     if (_selectedBillGenerationDate != null && _selectedDueDate != null) {
       try {
+        isLoading = true;
         final creditCard = CreditCard(
+          id: '',
           userId: '',
           bank: selectedBank!,
           cardName: _selectedCreditCard!,
@@ -63,18 +67,24 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
         print(creditCard.toJson());
 
         final response =
-            ref.read(addBillerAPIProvider).addCreditCard(creditCard);
+            await ref.read(billerAPIProvider).addCreditCard(creditCard);
 
         print(response.toString());
 
         if (response != null) {
+          isLoading = false;
+
           await context.showAlertDialog(
             content: 'Credit card added successfully!',
             defaultActionText: 'OK',
           );
           context.pop();
         }
+
+        isLoading = false;
       } catch (error) {
+        isLoading = false;
+
         debugPrint('Error adding credit card: $error');
         await context.showAlertDialog(
           content: 'Failed to add credit card. Please try again.',
@@ -144,6 +154,7 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
           FutureBuilder<List<String>>(
             future: ref.read(ccBankListProvider).get_cc_banks_list(),
             builder: (context, snapshot) {
+              print(snapshot.data);
               if (snapshot.hasData) {
                 final bankNames = snapshot.data!.toSet().toList();
 

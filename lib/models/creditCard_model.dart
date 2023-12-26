@@ -1,4 +1,5 @@
 class CreditCard {
+  String id;
   String bank;
   String cardName;
   int? creditLimit;
@@ -9,6 +10,7 @@ class CreditCard {
   int intDueDate;
 
   CreditCard({
+    required this.id,
     required this.bank,
     required this.cardName,
     required this.creditLimit,
@@ -19,17 +21,17 @@ class CreditCard {
     required this.intDueDate,
   });
 
-  // Factory constructor for creating CreditCard from JSON
   factory CreditCard.fromJson(Map<String, dynamic> json) {
     return CreditCard(
+      id: json['id'] as String,
       bank: json['bank'] as String,
-      cardName: json['card_name'] as String,
+      cardName: json['cardName'] as String,
       creditLimit: json['credit_limit'] as int?,
-      last4Digits: json['last_4_digits'] as int,
-      lastPayment: json['last_payment'] as String?,
-      userId: json['user_id'] as String,
-      intBillDate: json['int_bill_date'] as int,
-      intDueDate: json['int_due_date'] as int,
+      last4Digits: json['last4Digits'] as int,
+      lastPayment: json['lastPayment'] as String?,
+      userId: json['userId'] as String,
+      intBillDate: json['intBillDate'] as int,
+      intDueDate: json['intDueDate'] as int,
     );
   }
 
