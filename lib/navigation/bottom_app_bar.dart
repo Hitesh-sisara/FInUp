@@ -1,13 +1,10 @@
-import 'package:finup/common/widgets/utils.dart';
 import 'package:finup/core/providers/navbar_provider.dart';
 import 'package:finup/UI/tabs_screen.dart';
 import 'package:finup/instruments/screens/bottom_sheet.dart';
-import 'package:finup/instruments/screens/new_instrument.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:go_router/go_router.dart';
 
 class MainWrapper extends ConsumerStatefulWidget {
   const MainWrapper({super.key});

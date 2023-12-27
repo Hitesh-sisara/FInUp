@@ -22,7 +22,7 @@ class BillerAPI {
     return [];
   }
 
-  Future<CreditCard?> addCreditCard(CreditCard creditCard) async {
+  Future<void> addCreditCard(CreditCard creditCard) async {
     return await _client.from('credit_cards').insert(creditCard.toJson());
   }
 }

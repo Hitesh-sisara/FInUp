@@ -1,4 +1,5 @@
 import 'package:finup/apis/add_biller_api.dart';
+import 'package:finup/common/lists.dart';
 import 'package:finup/common/widgets/long_button.dart';
 import 'package:finup/common/widgets/small_icon_button.dart';
 import 'package:finup/common/widgets/utils.dart';
@@ -11,7 +12,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter/services.dart';
-import 'package:go_router/go_router.dart';
 
 class AddNewCrediCard extends ConsumerStatefulWidget {
   const AddNewCrediCard({super.key});
@@ -34,9 +34,11 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
 
   final TextEditingController last4DigitsController = TextEditingController();
   final TextEditingController creditLimitController = TextEditingController();
+  final TextEditingController nameOnCardController = TextEditingController();
 
   int? _selectedBillGenerationDate;
   int? _selectedDueDate;
+  String? _selectedNetwork;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
@@ -51,8 +53,8 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
 
   Future<void> _submitCreditCardData() async {
     if (_selectedBillGenerationDate != null && _selectedDueDate != null) {
+      setState(() => isLoading = true);
       try {
-        isLoading = true;
         final creditCard = CreditCard(
           id: '',
           userId: '',
@@ -62,34 +64,23 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
           creditLimit: int.parse(creditLimitController.text),
           intBillDate: _selectedBillGenerationDate!,
           intDueDate: _selectedDueDate!,
+          NameOnCard: nameOnCardController.text.trim(),
+          Network: _selectedNetwork!,
         );
 
-        print(creditCard.toJson());
+        await ref.read(billerAPIProvider).addCreditCard(creditCard);
 
-        final response =
-            await ref.read(billerAPIProvider).addCreditCard(creditCard);
+        Navigator.of(context).pop();
 
-        print(response.toString());
-
-        if (response != null) {
-          isLoading = false;
-
-          await context.showAlertDialog(
-            content: 'Credit card added successfully!',
-            defaultActionText: 'OK',
-          );
-          context.pop();
-        }
-
-        isLoading = false;
+        context.showAlert("Credit Card added succsessfully");
       } catch (error) {
-        isLoading = false;
-
         debugPrint('Error adding credit card: $error');
         await context.showAlertDialog(
           content: 'Failed to add credit card. Please try again.',
           defaultActionText: 'OK',
         );
+      } finally {
+        setState(() => isLoading = false);
       }
     } else {
       await context.showAlertDialog(content: "select both Dates");
@@ -102,44 +93,102 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
 
     return SizedBox(
       width: 1.sw,
-      height: 300.h,
+      height: 450.h,
       child: Padding(
         padding: EdgeInsets.symmetric(horizontal: 20.w),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('Add  Credit Card'),
-            const SizedBox(height: 20),
-            // ... other input fields
-
+            // Position "Add a Credit Card" text at the top
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              padding: EdgeInsets.symmetric(vertical: 20.h),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (selectedBank == null) _bankSelector(),
-                  // Show only if bank isn't selected
-                  if (selectedBank != null && _selectedCreditCard == null)
-                    if (selectedBank!.isNotEmpty) _creditCardSelector(),
-
-                  // if (_selectedCreditCard != null)
-                  //   _buildCreditCardDetailsFields(),
-
-                  if (_selectedCreditCard != null && !_isCardDeatiledFilled)
-                    _buildCreditCardDetailsFields(),
-
-                  if (_isCardDeatiledFilled) _buildBillAndDueDateFields(),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    child: Icon(CupertinoIcons.creditcard),
+                  ),
+                  Text(
+                    'Add Credit Card',
+                    style:
+                        TextStyle(fontSize: 20.sp, fontWeight: FontWeight.w600),
+                  ),
                 ],
               ),
             ),
 
-            SizedBox(
-              height: 50.h,
-            )
+            // Center the remaining elements using a separate column
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // ... other input fields
+
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (selectedBank == null) _bankSelector(),
+
+                        // Show only if bank isn't selected
+
+                        if (selectedBank != null &&
+                                _selectedCreditCard == null ||
+                            _selectedNetwork == null)
+                          _bankAndCardSelector(),
+
+                        if (_selectedCreditCard != null &&
+                            !_isCardDeatiledFilled &&
+                            _selectedNetwork != null)
+                          _buildCreditCardDetailsFields(),
+
+                        if (_isCardDeatiledFilled) _buildBillAndDueDateFields(),
+                      ],
+                    ),
+                  ),
+
+                  SizedBox(
+                    height: 50.h,
+                  )
+                ],
+              ),
+            ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _bankAndCardSelector() {
+    return Column(
+      children: [
+        // Show only if bank isn't selected
+
+        if (selectedBank != null && _selectedCreditCard == null)
+          if (selectedBank!.isNotEmpty)
+            Column(
+              children: [
+                _bankSelector(),
+                SizedBox(height: 20.h),
+                _creditCardSelector(),
+              ],
+            ),
+
+        if (selectedBank != null && _selectedCreditCard != null)
+          if (_selectedCreditCard!.isNotEmpty)
+            Column(
+              children: [
+                _bankSelector(),
+                SizedBox(height: 20.h),
+                _creditCardSelector(),
+                SizedBox(height: 20.h),
+                _networkSelector(),
+              ],
+            ),
+      ],
     );
   }
 
@@ -149,8 +198,11 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Bank Name'),
-          const SizedBox(height: 8),
+          Text(
+            'Bank Name',
+            style: TextStyle(fontSize: 20.sp),
+          ),
+          SizedBox(height: 8.h),
           FutureBuilder<List<String>>(
             future: ref.read(ccBankListProvider).get_cc_banks_list(),
             builder: (context, snapshot) {
@@ -198,7 +250,10 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text('Credit Card Name'),
+          Text(
+            'Card Name',
+            style: TextStyle(fontSize: 20.sp),
+          ),
           const SizedBox(height: 8),
           isLoadingCCList
               ? const CircularProgressIndicator()
@@ -218,6 +273,35 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
     );
   }
 
+  Widget _networkSelector() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Card Network',
+            style: TextStyle(fontSize: 20.sp),
+          ),
+          const SizedBox(height: 8),
+          isLoadingCCList
+              ? const CircularProgressIndicator()
+              : FancyDropdownButton(
+                  title: _selectedNetwork ?? 'Select Card Network',
+                  items:
+                      cardNetworks.map((network) => network['name']!).toList(),
+                  value: _selectedNetwork, // Track the selected card
+                  onChanged: (value) {
+                    setState(() {
+                      _selectedNetwork = value!; // Update selected card
+                    });
+                  },
+                ),
+        ],
+      ),
+    );
+  }
+
   Widget _buildCreditCardDetailsFields() {
     return Row(
       children: [
@@ -227,7 +311,18 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
             key: _formKey,
             child: Column(
               children: [
-                const SizedBox(height: 16),
+                // Pinput(
+                //   // Replace TextFormField with Pinput
+                //   controller: last4DigitsController,
+                //   length: 4,
+                //   onChanged: (value) {
+                //     // Handle input changes as needed
+                //   },
+                //   onCompleted: (value) {
+                //     // Handle completion actions if required
+                //   },
+                // ),
+                // const SizedBox(height: 16),
                 TextFormField(
                   controller: last4DigitsController,
                   inputFormatters: [
@@ -235,7 +330,7 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
                     LengthLimitingTextInputFormatter(4),
                   ],
                   decoration: InputDecoration(
-                    labelText: 'Last 4 digits of card number',
+                    labelText: 'Card\'s last 4 digit ',
                     focusedBorder: OutlineInputBorder(
                       borderSide:
                           const BorderSide(color: Colors.blue, width: 2),
@@ -243,12 +338,12 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
                   ),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
-                      return 'Please enter the last 4 digits';
+                      return 'Enter the last 4 digits';
                     }
                     return null; // Validation passes
                   },
                 ),
-                const SizedBox(height: 8),
+                SizedBox(height: 20.h),
                 TextFormField(
                   controller: creditLimitController,
                   keyboardType: TextInputType.number,
@@ -267,6 +362,30 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
                     if (int.tryParse(value) == null) {
                       return 'enter a numeric value'; // Ensure numeric input
                     }
+                    return null; // Validation passes
+                  },
+                ),
+                SizedBox(height: 20.h),
+
+                TextFormField(
+                  controller:
+                      nameOnCardController, // Use a dedicated controller for the name
+                  keyboardType:
+                      TextInputType.name, // Optimized keyboard for names
+                  decoration: InputDecoration(
+                    labelText: 'Name on card', // Clear label for user guidance
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          const BorderSide(color: Colors.blue, width: 2),
+                    ),
+                  ),
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'Enter the name on the card'; // Informative error message
+                    }
+
+                    // Optional validation for name formatting if required
+
                     return null; // Validation passes
                   },
                 ),
@@ -411,11 +530,18 @@ class _AddNewCrediCardState extends ConsumerState<AddNewCrediCard> {
           flex: 30,
           child: Center(
             child: MyIconButton(
+              isLoading: isLoading,
               icon: Icon(
                 CupertinoIcons.arrow_right,
                 color: Theme.of(context).canvasColor,
               ),
-              ontap: _submitCreditCardData, // Use the extracted function
+              ontap: () async {
+                isLoading
+                    ? null
+                    : {
+                        await _submitCreditCardData(),
+                      };
+              }, // Use the extracted function
             ),
           ),
         ),
