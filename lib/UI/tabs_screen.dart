@@ -1,4 +1,4 @@
-import 'package:finup/UI/billers/credit_card_tab.dart';
+import 'package:finup/UI/billers/credit_card/credit_card_tab.dart';
 import 'package:finup/apis/fetch_biller_api.dart';
 import 'package:finup/models/creditCard_model.dart';
 import 'package:flutter/material.dart';
