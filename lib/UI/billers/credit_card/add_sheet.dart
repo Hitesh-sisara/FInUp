@@ -1,12 +1,13 @@
+import 'package:finup/UI/billers/credit_card/add_new_bill.dart';
 import 'package:flutter/material.dart';
 
-void showAddSheetCreditCard(BuildContext context) {
+void showAddSheetCreditCard(BuildContext context, String accountId) {
   showModalBottomSheet(
     context: context,
     builder: (context) {
       return Container(
         padding: const EdgeInsets.all(20),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.only(
             topLeft: Radius.circular(20),
@@ -20,8 +21,8 @@ void showAddSheetCreditCard(BuildContext context) {
               leading: Icon(Icons.receipt_long_outlined),
               title: Text('Add New Bill'),
               onTap: () {
-                // Handle adding new bill here
-                Navigator.pop(context); // Close the bottom sheet
+                showAddBillBottomSheet(context, accountId);
+                // Navigator.pop(context); // Close the bottom sheet
               },
             ),
             ListTile(

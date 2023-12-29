@@ -103,7 +103,7 @@ class CreditCardCard extends StatelessWidget {
           child: Row(
             children: [
               InkWell(
-                onTap: () => showAddSheetCreditCard(context),
+                onTap: () => showAddSheetCreditCard(context, creditCard.id),
                 child: Card(
                   child: Container(
                     margin: EdgeInsets.only(right: 4.w),
