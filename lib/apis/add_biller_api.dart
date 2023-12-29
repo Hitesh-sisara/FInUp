@@ -1,3 +1,4 @@
+import 'package:finup/models/bill_model.dart';
 import 'package:finup/models/creditCard_model.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -24,5 +25,9 @@ class BillerAPI {
 
   Future<void> addCreditCard(CreditCard creditCard) async {
     return await _client.from('credit_cards').insert(creditCard.toJson());
+  }
+
+  Future<void> addNewBill(Bill bill) async {
+    return await _client.from('bill').insert(bill.toJson());
   }
 }

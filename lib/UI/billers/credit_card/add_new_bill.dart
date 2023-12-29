@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+
+import 'package:finup/apis/add_biller_api.dart';
+import 'package:finup/common/widgets/utils.dart';
+import 'package:finup/models/bill_model.dart';
 
 void showAddBillBottomSheet(BuildContext context, String accountId) {
   showModalBottomSheet(
@@ -8,26 +13,47 @@ void showAddBillBottomSheet(BuildContext context, String accountId) {
   );
 }
 
-class AddBillBottomSheet extends StatefulWidget {
+class AddBillBottomSheet extends ConsumerStatefulWidget {
   final String accountId;
 
-  const AddBillBottomSheet({Key? key, required this.accountId})
-      : super(key: key);
+  const AddBillBottomSheet({super.key, required this.accountId});
 
   @override
-  State<AddBillBottomSheet> createState() => _AddBillBottomSheetState();
+  ConsumerState<ConsumerStatefulWidget> createState() =>
+      _AddBillBottomSheetState();
 }
 
-class _AddBillBottomSheetState extends State<AddBillBottomSheet> {
+class _AddBillBottomSheetState extends ConsumerState<AddBillBottomSheet> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController amountController = TextEditingController();
   TextEditingController dueDateController = TextEditingController();
   TextEditingController billDateController = TextEditingController();
+  bool isLoading = false;
 
   Future<void> _postBill() async {
     if (_formKey.currentState!.validate()) {
-      try {} catch (error) {
-        // Handle network or other errors
+      setState(() => isLoading = true);
+      try {
+        final bill = Bill(
+          id: '',
+          account: widget.accountId,
+          amount: int.parse(amountController.text.trim()),
+          dueDate: DateTime.parse(dueDateController.text),
+          billDate: DateTime.parse(billDateController.text),
+        );
+
+        await ref.read(billerAPIProvider).addNewBill(bill);
+
+        Navigator.of(context).pop();
+
+        context.showAlert("Bill added succsessfully");
+      } catch (error) {
+        debugPrint('Error adding Bill: $error');
+        await context.showAlertDialog(
+          content: 'Failed to add Bill. Please try again.',
+        );
+      } finally {
+        setState(() => isLoading = false);
       }
     }
   }
