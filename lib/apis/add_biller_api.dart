@@ -28,6 +28,7 @@ class BillerAPI {
   }
 
   Future<void> addNewBill(Bill bill) async {
+    print(bill.toJson());
     return await _client.from('bill').insert(bill.toJson());
   }
 }
