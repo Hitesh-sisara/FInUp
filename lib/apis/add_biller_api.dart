@@ -31,4 +31,16 @@ class BillerAPI {
     print(bill.toJson());
     return await _client.from('bill').insert(bill.toJson());
   }
+
+  Future<Map<String, dynamic>?> findLatestBill(String accountId) async {
+    final res = await _client
+        .from('bill')
+        .select('*')
+        .eq('account', accountId)
+        .order('created_at', ascending: false)
+        .limit(1)
+        .single();
+
+    print(res);
+  }
 }

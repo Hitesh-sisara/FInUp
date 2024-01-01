@@ -1,4 +1,5 @@
 import 'package:finup/UI/billers/credit_card/add_sheet.dart';
+import 'package:finup/UI/widgets/creditCrad_bill_details.dart';
 import 'package:finup/models/creditCard_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -86,12 +87,16 @@ class CreditCardCard extends StatelessWidget {
                       ),
                       Container(
                         color: Theme.of(context).secondaryHeaderColor,
+                        width: (1.sw - 32.w) / 2,
+                        height: 200.h,
+
+                        //add due date and bil data bill amount data here
+
+                        child: CreditCardBillSection(creditCard: creditCard),
 
                         // color: Color(0xffF0F8FF),
                         // color: Color(0xff434f66),
                         // color: Theme.of(context).,
-                        width: (1.sw - 32.w) / 2,
-                        height: 200.h,
                       )
                     ],
                   ),
@@ -173,82 +178,6 @@ class CreditCardCard extends StatelessWidget {
             ],
           ),
         ),
-        // Card(
-        //   elevation: 5,
-        //   margin: EdgeInsets.only(left: 16.w, right: 16.w, bottom: 16.h),
-        //   child: Expanded(
-        //     child: Row(
-        //       children: [
-        //         InkWell(
-        //           child: Container(
-        //             color: Theme.of(context).colorScheme.primaryContainer,
-        //             height: 70.h,
-        //             width: 70.w,
-        //             child: Icon(
-        //               Icons.add,
-        //               size: 36.sp,
-        //             ),
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: Container(),
-        //         ),
-        //         Padding(
-        //           padding: EdgeInsets.symmetric(horizontal: 8.w),
-        //           child: InkWell(
-        //             child: Container(
-        //                 color: Theme.of(context).colorScheme.primaryContainer,
-        //                 height: 70.h,
-        //                 width: 70.w,
-        //                 child: Icon(Icons.sell, size: 36.sp)),
-        //           ),
-        //         ),
-        //         Padding(
-        //           padding: EdgeInsets.symmetric(horizontal: 4.w),
-        //           child: InkWell(
-        //             child: Container(
-        //               color: Theme.of(context).colorScheme.primaryContainer,
-        //               height: 70.h,
-        //               width: 70.w,
-        //               child: Icon(
-        //                 CupertinoIcons.arrow_up_square_fill,
-        //                 size: 40.sp,
-        //               ),
-        //             ),
-        //           ),
-        //         ),
-        //         Padding(
-        //           padding: EdgeInsets.symmetric(horizontal: 8.w),
-        //           child: InkWell(
-        //             child: Container(
-        //               color: Theme.of(context).colorScheme.primaryContainer,
-        //               height: 70.h,
-        //               width: 70.w,
-        //               child: Icon(
-        //                 CupertinoIcons.arrow_down_square_fill,
-        //                 size: 40.sp,
-        //               ),
-        //             ),
-        //           ),
-        //         ),
-        //         Expanded(
-        //           child: Container(),
-        //         ),
-        //         InkWell(
-        //           child: Container(
-        //             color: Theme.of(context).colorScheme.primaryContainer,
-        //             height: 70.h,
-        //             width: 70.w,
-        //             child: Icon(
-        //               Icons.settings,
-        //               size: 30.sp,
-        //             ),
-        //           ),
-        //         ),
-        //       ],
-        //     ),
-        //   ),
-        // )
       ],
     );
   }
