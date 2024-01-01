@@ -85,7 +85,9 @@ class CreditCardCard extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        color: Color(0xff243240),
+                        color: Theme.of(context).secondaryHeaderColor,
+
+                        // color: Color(0xffF0F8FF),
                         // color: Color(0xff434f66),
                         // color: Theme.of(context).,
                         width: (1.sw - 32.w) / 2,
