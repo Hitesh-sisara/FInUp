@@ -24,6 +24,7 @@ class BillerAPI {
   }
 
   Future<void> addCreditCard(CreditCard creditCard) async {
+    print(creditCard.toJson());
     return await _client.from('credit_cards').insert(creditCard.toJson());
   }
 
@@ -32,15 +33,25 @@ class BillerAPI {
     return await _client.from('bill').insert(bill.toJson());
   }
 
-  Future<Map<String, dynamic>?> findLatestBill(String accountId) async {
-    final res = await _client
-        .from('bill')
-        .select('*')
-        .eq('account', accountId)
-        .order('created_at', ascending: false)
-        .limit(1)
-        .single();
+  Future<Bill?> findLatestBill(String accountId) async {
+    try {
+      final res = await _client
+          .from('bill')
+          .select('*')
+          .eq('account', accountId)
+          .order('created_at', ascending: false)
+          .limit(1)
+          .single();
 
-    print(res);
+      if (res != null) {
+        return Bill.fromJson(res);
+      } else {
+        return null; // No bill data found
+      }
+    } catch (error) {
+      // Handle any errors during database interaction
+      print(error);
+      return null; // Return null in case of errors
+    }
   }
 }

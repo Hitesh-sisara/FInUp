@@ -17,16 +17,14 @@ class Bill {
   });
 
   // Factory constructor from database maps
-  factory Bill.fromMap(Map<String, dynamic> map) {
-    return Bill(
-      createdAt: map['created_at'] as DateTime,
-      account: map['account'] as String,
-      amount: map['amount'] as int,
-      dueDate: map['due_date'] as DateTime,
-      billDate: map['bill_date'] as DateTime,
-      id: map['id'] as String,
-    );
-  }
+  factory Bill.fromJson(Map<String, dynamic> json) => Bill(
+        createdAt: DateTime.parse(json['created_at']),
+        account: json['account'] as String,
+        amount: json['amount'] as int,
+        dueDate: DateTime.parse(json['due_date']),
+        billDate: DateTime.parse(json['bill_date']),
+        id: json['id'] as String,
+      );
 
   // Convert to Map for database operations
   // Map<String, dynamic> toMap() {
@@ -46,12 +44,14 @@ class Bill {
       };
 
   // Create a Bill instance from a JSON Map
-  factory Bill.fromJson(Map<String, dynamic> json) => Bill(
-        createdAt: DateTime.parse(json['created_at']),
-        account: json['account'] as String,
-        amount: json['amount'] as int,
-        dueDate: DateTime.parse(json['due_date']),
-        billDate: DateTime.parse(json['bill_date']),
-        id: json['id'] as String,
-      );
+  factory Bill.fromMap(Map<String, dynamic> map) {
+    return Bill(
+      createdAt: map['created_at'] as DateTime,
+      account: map['account'] as String,
+      amount: map['amount'] as int,
+      dueDate: map['due_date'] as DateTime,
+      billDate: map['bill_date'] as DateTime,
+      id: map['id'] as String,
+    );
+  }
 }
